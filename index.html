@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beneath the Surface - Dampness Investigation | The Snag Tag</title>
+<meta name="description" content="Evidence-first dampness investigation tool for home buyers and owners. Observe, measure, photograph, document and escalate. Part of The Snag Tag Beneath the Surface collection.">
+<style>
+:root{
+  --paper:#F7FAFD; --sheet:#FFFFFF; --grid:rgba(45,91,154,.07); --grid2:rgba(45,91,154,.035);
+  --ink:#16243F; --ink2:#44546F; --muted:#6B7A93; --line:#C9D6E8; --line2:#E2EAF4;
+  --blue:#2D5B9A; --blue-soft:#E8F0FA; --cyan:#0B7F97; --cyan-soft:#E3F4F7;
+  --high:#B3261E; --high-soft:#FCEBEA; --med:#A15C00; --med-soft:#FFF3E0; --low:#2E7D4F; --low-soft:#E7F5EC;
+  --focus:#0B7F97; --shadow:0 1px 2px rgba(22,36,63,.06),0 4px 14px rgba(22,36,63,.05);
+  --mono:ui-monospace,"SFMono-Regular","Cascadia Mono","Roboto Mono",Consolas,monospace;
+  --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+[data-theme="dark"]{
+  --paper:#0F1A2C; --sheet:#15233A; --grid:rgba(140,180,230,.07); --grid2:rgba(140,180,230,.035);
+  --ink:#E6EEF9; --ink2:#B8C6DB; --muted:#8C9BB2; --line:#2F4466; --line2:#243855;
+  --blue:#8CB4E6; --blue-soft:#1C3150; --cyan:#5CC6DA; --cyan-soft:#153644;
+  --high:#FF8A80; --high-soft:#3A1E22; --med:#FFB74D; --med-soft:#3A2C17; --low:#81C995; --low-soft:#1B3326;
+  --shadow:none;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:var(--sans); color:var(--ink); background:var(--paper); font-size:15px; line-height:1.5;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px),
+  linear-gradient(var(--grid2) 1px,transparent 1px),linear-gradient(90deg,var(--grid2) 1px,transparent 1px);
+  background-size:80px 80px,80px 80px,16px 16px,16px 16px;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--blue)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+/* Title block */
+header.tb{background:var(--sheet);border-bottom:2px solid var(--ink);position:sticky;top:0;z-index:20}
+@media(max-width:700px){header.tb{position:static}.tb-cell{padding:8px 12px}}
+.tb-row{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.tb-cell{padding:10px 14px;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;min-width:0}
+.tb-cell:last-child{border-right:0}
+.tb-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.brand{flex:1 1 280px}
+.brand .coll{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.brand h1{margin:2px 0 0;font-size:20px;font-weight:700;letter-spacing:-.01em}
+.brand h1 span{color:var(--blue);font-weight:600}
+.tb-ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--ink);border-radius:4px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:6px 10px;font-size:13px;cursor:pointer;font-family:var(--mono)}
+.seg button+button{border-left:1px solid var(--ink)}
+.seg button.on{background:var(--ink);color:var(--sheet)}
+nav.tabs{background:var(--sheet);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+nav.tabs button{border:0;background:none;padding:12px 14px;cursor:pointer;font-size:14px;color:var(--ink2);border-bottom:3px solid transparent;white-space:nowrap}
+nav.tabs button .n{font-family:var(--mono);font-size:11px;color:var(--muted);margin-right:6px}
+nav.tabs button.on{color:var(--ink);border-bottom-color:var(--cyan);font-weight:600}
+main{padding:22px 0 60px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);margin-bottom:18px;position:relative}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line2);flex-wrap:wrap}
+.sheet-h h2{margin:0;font-size:17px}
+.sheet-h .ref{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em}
+.sheet-b{padding:16px}
+.lede{color:var(--ink2);margin:0 0 12px;max-width:760px}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:820px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.g2,.g3,.g4{grid-template-columns:1fr}}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink2);min-width:0}
+label.f>span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+input[type=text],input[type=number],input[type=date],select,textarea{
+  width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:4px;background:var(--sheet);font-size:14px}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.hint{font-size:12px;color:var(--muted)}
+.conv{font-family:var(--mono);font-size:12px;color:var(--cyan);min-height:16px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--ink);background:var(--sheet);padding:8px 14px;border-radius:4px;cursor:pointer;font-size:14px}
+.btn:hover{background:var(--blue-soft)}
+.btn.pri{background:var(--ink);color:var(--sheet)}
+.btn.pri:hover{background:var(--blue);border-color:var(--blue)}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn.ghost{border-color:var(--line)}
+.btn.danger{border-color:var(--high);color:var(--high)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--sheet);border-radius:999px;padding:5px 11px;font-size:13px;cursor:pointer;color:var(--ink2)}
+.chip.on{background:var(--cyan-soft);border-color:var(--cyan);color:var(--ink);font-weight:600}
+.chip.on::before{content:"\2713  ";color:var(--cyan)}
+/* Journey */
+.journey{display:flex;gap:0;overflow-x:auto;padding:4px 0}
+.jstep{flex:1 0 110px;text-align:center;position:relative;padding:8px 4px}
+.jstep .dot{width:34px;height:34px;margin:0 auto 6px;border:2px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:12px;background:var(--sheet);position:relative;z-index:1}
+.jstep::after{content:"";position:absolute;top:24px;left:50%;right:-50%;border-top:2px dashed var(--line)}
+.jstep:last-child::after{display:none}
+.jstep .t{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.jstep .d{font-size:12px;color:var(--muted)}
+/* Tables */
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px;border-bottom:2px solid var(--ink);font-weight:500}
+.tbl td{padding:10px 8px;border-bottom:1px solid var(--line2);vertical-align:top}
+.tbl td .sub{font-size:12px;color:var(--muted)}
+.tbl-wrap{overflow-x:auto}
+@media(max-width:700px){
+  .tbl.stack thead{display:none}
+  .tbl.stack tr{display:block;border:1px solid var(--line);border-radius:6px;margin-bottom:10px;padding:6px}
+  .tbl.stack td{display:block;border:0;padding:6px}
+  .tbl.stack td[data-l]::before{content:attr(data-l);display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+}
+.risk{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:3px;border:1px solid}
+.risk.High{color:var(--high);background:var(--high-soft);border-color:var(--high)}
+.risk.Medium{color:var(--med);background:var(--med-soft);border-color:var(--med)}
+.risk.Low{color:var(--low);background:var(--low-soft);border-color:var(--low)}
+.stat{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden;flex-wrap:wrap}
+.stat button{border:0;background:var(--sheet);padding:5px 9px;font-size:12px;cursor:pointer;font-family:var(--mono);color:var(--ink2)}
+.stat button+button{border-left:1px solid var(--line)}
+.stat button.on[data-v="ok"],.stat button.on[data-v="none"]{background:var(--low-soft);color:var(--low);font-weight:700}
+.stat button.on[data-v="finding"],.stat button.on[data-v="signs"]{background:var(--high-soft);color:var(--high);font-weight:700}
+.stat button.on[data-v="open"],.stat button.on[data-v="unchecked"]{background:var(--blue-soft);color:var(--blue);font-weight:700}
+.stat button.on[data-v="na"],.stat button.on[data-v="noaccess"]{background:var(--med-soft);color:var(--med);font-weight:700}
+.note-in{margin-top:6px;font-size:13px;padding:6px 8px}
+/* Findings */
+.fcard{border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:6px;padding:12px 14px;margin-bottom:10px;background:var(--sheet);display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.fcard.High{border-left-color:var(--high)}.fcard.Medium{border-left-color:var(--med)}.fcard.Low{border-left-color:var(--low)}
+.fid{font-family:var(--mono);font-weight:700;letter-spacing:.06em}
+.fcard .meta{font-size:13px;color:var(--ink2)}
+.empty{border:1px dashed var(--line);border-radius:6px;padding:26px;text-align:center;color:var(--muted)}
+/* Editor */
+.step{border-top:1px solid var(--line2);padding:16px 0}
+.step:first-child{border-top:0;padding-top:0}
+.step-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.step-h .num{width:28px;height:28px;border:2px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:12px;flex:0 0 auto}
+.step-h h3{margin:0;font-size:15px}
+.step-h .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
+.q{font-size:14px;font-weight:600;margin:10px 0 6px}
+.editor-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px}
+@media(max-width:960px){.editor-layout{grid-template-columns:1fr}}
+.side{position:sticky;top:130px;align-self:start}
+@media(max-width:960px){.side{position:static}}
+.prompt-box{border:1px solid var(--cyan);border-radius:6px;background:var(--cyan-soft);padding:12px 14px}
+.prompt-box h4{margin:0 0 6px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
+.prompt-box ul{margin:4px 0 10px;padding-left:18px;font-size:13px}
+.prompt-box li{margin-bottom:4px}
+.warn{border:1px solid var(--high);background:var(--high-soft);border-radius:6px;padding:10px 12px;font-size:13px;margin-bottom:10px}
+.warn b{color:var(--high)}
+.info{border:1px solid var(--blue);background:var(--blue-soft);border-radius:6px;padding:10px 12px;font-size:13px;margin-bottom:10px}
+.ok{border:1px solid var(--low);background:var(--low-soft);border-radius:6px;padding:10px 12px;font-size:13px;margin-bottom:10px}
+/* Photos */
+.photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(max-width:560px){.photos{grid-template-columns:1fr}}
+.ph{border:1px dashed var(--ink2);border-radius:6px;padding:10px;text-align:center;background:var(--paper);min-height:160px;display:flex;flex-direction:column;gap:6px;justify-content:center;align-items:center}
+.ph .pt{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.ph .pd{font-size:12px;color:var(--muted)}
+.ph img{max-width:100%;max-height:170px;border-radius:4px;border:1px solid var(--line)}
+.ph input{display:none}
+/* Dew */
+.dew-out{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+@media(max-width:560px){.dew-out{grid-template-columns:1fr}}
+.kpi{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--paper)}
+.kpi .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-size:20px;font-weight:700;font-family:var(--mono)}
+.kpi .s{font-size:12px;color:var(--ink2)}
+.sum-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media(max-width:700px){.sum-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.legend{display:grid;gap:8px;font-size:13px}
+.legend div{display:flex;gap:10px;align-items:flex-start}
+.refs{font-size:13px;padding-left:18px}
+.refs li{margin-bottom:6px}
+.src{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;color:var(--muted);margin-top:4px}
+.src a{color:var(--cyan);text-decoration:none;border-bottom:1px dotted var(--cyan)}
+.srclist{list-style:none;padding:0;margin:0;font-size:13px}
+.srclist li{padding:8px 0;border-bottom:1px solid var(--line2);overflow-wrap:anywhere}
+.refs li,.rep-f dd{overflow-wrap:anywhere}
+.srclist .key{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.06em;text-transform:uppercase;display:block}
+.srclist li:target{background:var(--cyan-soft)}
+.steps li{margin-bottom:8px}
+@media(max-width:700px){#reportBody table.tbl{display:block;overflow-x:auto}}
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--sheet);padding:10px 16px;border-radius:4px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:99;max-width:90vw}
+.toast.show{opacity:1}
+footer{border-top:2px solid var(--ink);background:var(--sheet);padding:14px 0;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.hide{display:none!important}
+.buyer-only,.owner-only{}
+body[data-mode="buyer"] .owner-only{display:none!important}
+body[data-mode="owner"] .buyer-only{display:none!important}
+/* Report */
+.rep-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+.rep-photos figure{margin:0;font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.rep-photos img{width:100%;border:1px solid var(--line);border-radius:3px}
+.rep-f{border:1px solid var(--line);border-radius:6px;padding:12px;margin-bottom:12px;page-break-inside:avoid}
+.rep-f dl{display:grid;grid-template-columns:170px 1fr;gap:4px 12px;margin:8px 0;font-size:13px}
+.rep-f dt{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.rep-f dd{margin:0}
+@media(max-width:560px){.rep-f dl{grid-template-columns:1fr}}
+@media print{
+  :root,[data-theme="dark"]{--paper:#fff;--sheet:#fff;--ink:#16243F;--ink2:#44546F;--muted:#5B6A82;--line:#B8C6DA;--line2:#DDE5F0;--blue:#2D5B9A;--blue-soft:#EEF3FA;--cyan:#0B7F97;--cyan-soft:#EAF6F8;--high:#B3261E;--high-soft:#FCEBEA;--med:#A15C00;--med-soft:#FFF3E0;--low:#2E7D4F;--low-soft:#E7F5EC}
+  body{background:#fff;font-size:12px;color:#16243F}
+  .rep-f{page-break-inside:auto}
+  .rep-f dl,.rep-photos figure{page-break-inside:avoid}
+  .rep-photos img{max-height:220px;object-fit:contain}
+  header.tb,nav.tabs,footer,.no-print,.toast{display:none!important}
+  .view{display:none!important}
+  #view-report{display:block!important}
+  .sheet{box-shadow:none;border-color:#999}
+  main{padding:0}
+}
+</style>
+</head>
+<body data-mode="buyer">
+
+<header class="tb">
+  <div class="wrap tb-row" style="padding:0">
+    <div class="tb-cell brand">
+      <div class="coll">The Snag Tag &middot; Beneath the Surface</div>
+      <h1>Dampness <span>Investigation</span></h1>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Mode</div>
+      <div class="seg" id="modeSeg" role="group" aria-label="Inspection mode">
+        <button data-v="buyer">Pre-Purchase</button><button data-v="owner">Maintenance</button>
+      </div>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Enter temps in</div>
+      <div class="seg" id="unitSeg" role="group" aria-label="Temperature unit">
+        <button data-v="C">&deg;C</button><button data-v="F">&deg;F</button>
+      </div>
+    </div>
+    <div class="tb-cell">
+      <div class="tb-label">Display</div>
+      <div class="seg" id="themeSeg" role="group" aria-label="Theme">
+        <button data-v="light">Light</button><button data-v="dark">Dark</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="wrap" id="tabs">
+    <button data-t="start"><span class="n">00</span>Start</button>
+    <button data-t="sweep"><span class="n">01</span>Hidden Sweep</button>
+    <button data-t="checks"><span class="n">02</span>Master Checks</button>
+    <button data-t="findings"><span class="n">03</span>Findings</button>
+    <button data-t="readings"><span class="n">04</span>Readings &amp; Dew Point</button>
+    <button data-t="report"><span class="n">05</span>Report</button>
+    <button data-t="guide"><span class="n">06</span>Guide &amp; Standards</button>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+
+<!-- START -->
+<section class="view" id="view-start">
+  <div class="sheet">
+    <div class="sheet-h"><h2>Observe. Measure. Document. Escalate.</h2><span class="ref">SHEET 00 &middot; START</span></div>
+    <div class="sheet-b">
+      <p class="lede">This tool does not diagnose your building. It helps you collect clear, organised evidence about dampness, so you can ask better questions and know when a qualified professional should investigate.</p>
+      <div class="journey" aria-label="Investigation journey">
+        <div class="jstep"><div class="dot">1</div><div class="t">Notice</div><div class="d">Something looks, feels or smells wrong</div></div>
+        <div class="jstep"><div class="dot">2</div><div class="t">Locate</div><div class="d">Room, surface, height</div></div>
+        <div class="jstep"><div class="dot">3</div><div class="t">Observe</div><div class="d">What it looks like, when it appears</div></div>
+        <div class="jstep"><div class="dot">4</div><div class="t">Measure</div><div class="d">Temp, RH, surface temp</div></div>
+        <div class="jstep"><div class="dot">5</div><div class="t">Photograph</div><div class="d">Context, close-up, relationship</div></div>
+        <div class="jstep"><div class="dot">6</div><div class="t">Classify</div><div class="d">Possible factors, priority</div></div>
+        <div class="jstep"><div class="dot">7</div><div class="t">Escalate</div><div class="d">When a professional is needed</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet">
+    <div class="sheet-h"><h2>Property details</h2><span class="ref">TITLE BLOCK</span></div>
+    <div class="sheet-b">
+      <div class="grid g3">
+        <label class="f"><span>Property name / reference</span><input type="text" data-p="name" placeholder="e.g. 12 Seaview Road"></label>
+        <label class="f"><span>Address</span><input type="text" data-p="address"></label>
+        <label class="f"><span>Inspection date</span><input type="date" data-p="date"></label>
+        <label class="f"><span>Inspected by</span><input type="text" data-p="inspector"></label>
+        <label class="f"><span>Property type</span>
+          <select data-p="type"><option value="">Select</option><option>House - detached</option><option>House - semi-detached / terraced</option><option>Apartment / flat</option><option>Townhouse</option><option>Bungalow / single storey</option><option>Other</option></select></label>
+        <label class="f"><span>Approx. year built (if known)</span><input type="text" data-p="age" placeholder="e.g. 1995 or unknown"></label>
+        <label class="f"><span>Weather today</span>
+          <select data-p="weather"><option value="">Select</option><option>Dry</option><option>Light rain</option><option>Heavy rain</option><option>Humid</option><option>Windy</option><option>Hot</option><option>Cold</option></select></label>
+        <label class="f"><span>Recent rainfall</span>
+          <select data-p="rain"><option value="">Select</option><option>None in the last 7 days</option><option>Within the last 48 hours</option><option>Within the last 7 days</option><option>Unknown</option></select></label>
+        <label class="f buyer-only"><span>Property occupied?</span>
+          <select data-p="occupied"><option value="">Select</option><option>Occupied</option><option>Vacant</option><option>Unknown</option></select></label>
+      </div>
+      <div class="q" style="margin-top:16px">Building exposure <span class="hint">(context only - not a cause)</span></div>
+      <div class="chips" id="exposureChips"></div>
+      <div class="info" style="margin-top:12px"><b>Coastal exposure is context, not a diagnosis.</b> A coastal building can have dampness from rainwater, plumbing, condensation or ground moisture like any other building. Record the exposure, then let the evidence point to the source.</div>
+      <label class="f" style="margin-top:6px"><span>General notes</span><textarea data-p="notes"></textarea></label>
+    </div>
+  </div>
+
+  <div class="sheet">
+    <div class="sheet-h"><h2>Before you start - safety first</h2><span class="ref">HSE</span></div>
+    <div class="sheet-b">
+      <div class="warn"><b>Water and electricity:</b> do not touch sockets, switches, light fittings or electrical enclosures that are wet, stained or corroded. Do not push moisture meter pins near electrical wiring. Report to a qualified electrician. <span class="src" style="display:inline">(<a href="#" data-src="CDC">CDC Electrical</a>)</span></div>
+      <ul style="margin:0;padding-left:18px;font-size:14px">
+        <li>Only enter roof spaces, sub-floors or cupboards where access is safe, lit and permitted. Never stand between ceiling joists. <span class="src" style="display:inline">(<a href="#" data-src="PP">Professional practice</a>)</span></li>
+        <li>View roofs from the ground or a safe window. Do not climb onto roofs - treat all roofs as fragile. <span class="src" style="display:inline">(<a href="#" data-src="HSE">UK HSE</a>)</span></li>
+        <li>Do not disturb visible mould or strip wallpaper - it can release spores. If you must be close, EPA suggests an N-95 respirator, long gloves and goggles without ventilation holes. <span class="src" style="display:inline">(<a href="#" data-src="EPA1">EPA Brief Guide</a>, <a href="#" data-src="EPA3">EPA Remediation Guide</a>)</span></li>
+        <li>In Pre-Purchase mode, you are a visitor: ask the owner or agent before moving furniture, opening cupboards or lifting covers. <span class="src" style="display:inline">(<a href="#" data-src="PP">Professional practice</a>)</span></li>
+        <li>Record what you see. Do not drill, cut or remove finishes. <span class="src" style="display:inline">(<a href="#" data-src="PP">Professional practice</a>)</span></li>
+      </ul>
+      <div class="row" style="margin-top:14px"><button class="btn pri" data-go="sweep">Start the Hidden Sweep &rarr;</button><button class="btn" id="newFindingStart">Log a damp patch now</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- SWEEP -->
+<section class="view hide" id="view-sweep">
+  <div class="sheet">
+    <div class="sheet-h"><h2>Hidden Dampness Sweep</h2><span class="ref">SHEET 01 &middot; <span id="sweepCount"></span></span></div>
+    <div class="sheet-b">
+      <p class="lede">A building can have moisture problems without an obvious wet patch. Check the places people usually miss. For each area, also ask: <b>could this area have been hidden from normal view?</b></p>
+      <div class="tbl-wrap"><table class="tbl stack" id="sweepTbl">
+        <thead><tr><th style="width:34%">Area</th><th>Status</th><th style="width:120px">Possibly concealed?</th><th style="width:130px"></th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECKS -->
+<section class="view hide" id="view-checks">
+  <div class="sheet">
+    <div class="sheet-h"><h2>Master Dampness Checks</h2><span class="ref">SHEET 02 &middot; <span id="checkCount"></span></span></div>
+    <div class="sheet-b">
+      <p class="lede">Work through each check. The <b>priority</b> shows how urgently the item should be investigated if found. It is not a diagnosis. See the Guide tab for how priorities are defined.</p>
+      <div class="row" style="margin-bottom:10px">
+        <span class="hint">Filter:</span>
+        <div class="seg" id="checkFilter"><button data-v="all" class="on">All</button><button data-v="High">High</button><button data-v="Medium">Medium</button><button data-v="open">Open</button><button data-v="finding">Findings</button></div>
+      </div>
+      <div class="tbl-wrap"><table class="tbl stack" id="checkTbl">
+        <thead><tr><th style="width:30%">Check</th><th style="width:26%">What to record</th><th>Priority</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINDINGS -->
+<section class="view hide" id="view-findings">
+  <div id="findList">
+    <div class="sheet">
+      <div class="sheet-h"><h2>Findings Register</h2><div class="row"><span class="ref" id="findCount"></span><button class="btn pri sm" id="addFinding">+ New finding</button></div></div>
+      <div class="sheet-b" id="findItems"></div>
+    </div>
+  </div>
+
+  <div id="findEdit" class="hide">
+    <div class="row no-print" style="margin-bottom:10px"><button class="btn ghost sm" id="backToList">&larr; All findings</button></div>
+    <div class="editor-layout">
+      <div class="sheet"><div class="sheet-h"><h2 id="edTitle">DAMP-001</h2><span class="ref">FINDING RECORD</span></div>
+        <div class="sheet-b" id="edBody"></div>
+      </div>
+      <aside class="side">
+        <div class="prompt-box" id="promptBox"></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- READINGS -->
+<section class="view hide" id="view-readings">
+  <div class="sheet">
+    <div class="sheet-h"><h2>Dew Point &amp; Condensation Check</h2><span class="ref">SHEET 04 &middot; CALCULATOR</span></div>
+    <div class="sheet-b">
+      <p class="lede">Condensation forms when a surface is at or below the dew point of the air around it. Enter readings from a thermo-hygrometer and a surface (infrared) thermometer.</p>
+      <div class="grid g3">
+        <label class="f"><span>Air temperature (<b class="tu">&deg;C</b>)</span><input type="number" step="0.1" id="dcT"><span class="conv" id="dcTc"></span></label>
+        <label class="f"><span>Relative humidity (%)</span><input type="number" step="1" min="1" max="100" id="dcRH"></label>
+        <label class="f"><span>Surface temperature (<b class="tu">&deg;C</b>)</span><input type="number" step="0.1" id="dcS"><span class="conv" id="dcSc"></span></label>
+      </div>
+      <div id="dcOut"></div>
+      <div class="row" style="margin-top:12px"><label class="f" style="flex:1 1 220px"><span>Room / location</span><input type="text" id="dcLoc" placeholder="e.g. Main bedroom, north wall"></label>
+      <button class="btn pri" id="dcSave" style="align-self:flex-end">Save to readings log</button></div>
+    </div>
+  </div>
+  <div class="sheet">
+    <div class="sheet-h"><h2>Readings Log</h2><span class="ref" id="rdCount"></span></div>
+    <div class="sheet-b">
+      <p class="lede owner-only">Take readings in the same place at a similar time of day, repeated over weeks, to see a pattern. One reading is a snapshot, not a trend.</p>
+      <p class="lede buyer-only">One visit gives a snapshot only. Note the weather and time of day with each reading.</p>
+      <div class="tbl-wrap"><table class="tbl stack" id="rdTbl"><thead><tr><th>Date / time</th><th>Location</th><th>Air</th><th>RH</th><th>Surface</th><th>Dew point</th><th>Margin</th><th></th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORT -->
+<section class="view hide" id="view-report">
+  <div class="row no-print" style="margin-bottom:12px">
+    <button class="btn pri" id="printBtn">Print / Save as PDF</button>
+    <button class="btn" id="exportBtn">Download backup (.json)</button>
+    <label class="btn">Restore backup<input type="file" id="importFile" accept=".json,application/json" style="display:none"></label>
+    <button class="btn danger" id="resetBtn">Clear all data</button>
+  </div>
+  <div class="sheet"><div class="sheet-b" id="reportBody"></div></div>
+</section>
+
+<!-- GUIDE -->
+<section class="view hide" id="view-guide">
+  <div class="sheet">
+    <div class="sheet-h"><h2>What you can do now</h2><span class="ref">SAFE STEPS &middot; ALL CITED</span></div>
+    <div class="sheet-b">
+      <p class="lede">Safe, general steps from public guidance. They reduce moisture and mould risk but do not replace finding the source. In a property you do not own, share these with the owner.</p>
+      <ul class="steps" id="stepsList" style="padding-left:18px;font-size:14px"></ul>
+    </div>
+  </div>
+  <div class="sheet">
+    <div class="sheet-h"><h2>How priorities are defined</h2><span class="ref">SHEET 06 &middot; KEY</span></div>
+    <div class="sheet-b legend">
+      <div><span class="risk High">High</span><span>May indicate active water entry, hidden damage, visible mould, decay of building materials, or water near electrical items. Further investigation by a suitably qualified professional is recommended.</span></div>
+      <div><span class="risk Medium">Medium</span><span>A visible symptom where the source is not yet known. Identify the source, monitor for change and re-check after rain, showers or seasonal change.</span></div>
+      <div><span class="risk Low">Low</span><span>Appears historic or cosmetic, with no current signs of moisture at the time of inspection. Record and monitor.</span></div>
+      <p class="hint" style="margin:6px 0 0">Priority is for organising your investigation. It is not a hazard rating and not a diagnosis. You can change any suggested priority. Priority definitions: professional practice.</p>
+    </div>
+  </div>
+  <div class="sheet">
+    <div class="sheet-h"><h2>What this tool will not do</h2><span class="ref">LIMITS</span></div>
+    <div class="sheet-b">
+      <ul style="margin:0;padding-left:18px">
+        <li>It will not tell you a wall has "rising damp", a "leak" or "condensation". A visual inspection alone cannot confirm a moisture source.</li>
+        <li>It does not give "safe" moisture meter percentages. Meter readings depend on the instrument, the material, calibration and method. Record readings as evidence and compare like with like. <span class="src" style="display:inline">(Professional practice)</span></li>
+        <li>It does not replace a building survey, a specialist damp investigation, a plumber, a roofer or an electrician.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sheet">
+    <div class="sheet-h"><h2>Standards &amp; Measurements</h2><span class="ref">REFERENCES</span></div>
+    <div class="sheet-b">
+      <h3 style="font-size:14px;margin:0 0 6px">Universal guidance used in this tool</h3>
+      <ul class="refs">
+        <li><b>Indoor relative humidity:</b> keep below 60%, ideally 30-50%. <span class="src" style="display:inline">(EPA Brief Guide, EPA Mold Course)</span></li>
+        <li><b>Drying time:</b> if wet or damp materials are dried within 24-48 hours after a leak or spill, in most cases mould will not grow. <span class="src" style="display:inline">(EPA Brief Guide, EPA Mold Course)</span></li>
+        <li><b>Mould area:</b> less than about 0.9 m&sup2; (10 ft&sup2;), roughly 0.9 m x 0.9 m (3 ft x 3 ft): in most cases the occupant can clean it. Larger areas or a lot of water damage: consult professionals. <span class="src" style="display:inline">(EPA Brief Guide)</span></li>
+        <li><b>Contaminated water:</b> damage caused by sewage or other contaminated water needs a professional experienced in contaminated water damage. <span class="src" style="display:inline">(EPA Mold Cleanup)</span></li>
+        <li><b>HVAC:</b> do not run the HVAC system if you know or suspect it is contaminated with mould. <span class="src" style="display:inline">(EPA Mold Cleanup)</span></li>
+        <li><b>Do not paint or caulk mouldy surfaces.</b> Clean and dry first. <span class="src" style="display:inline">(EPA Brief Guide)</span></li>
+        <li><b>Hidden mould</b> may be on the back of drywall, wallpaper or panelling, the top of ceiling tiles, the underside of carpets and pads, in pipe chases, behind furniture and above ceiling tiles. Removing wallpaper can release a large amount of spores. <span class="src" style="display:inline">(EPA Brief Guide, EPA Remediation Guide)</span></li>
+        <li><b>Wet electrical items:</b> never switch power or use electrical items while standing in water; have a qualified electrician inspect before power is restored. <span class="src" style="display:inline">(CDC Electrical)</span></li>
+        <li><b>Roofs:</b> treat all roofs as fragile until a competent person confirms otherwise. <span class="src" style="display:inline">(UK HSE)</span></li>
+        <li><b>Health principle:</b> persistent dampness and microbial growth on interior surfaces and in building structures should be avoided or minimised. WHO states no quantitative health-based threshold can be recommended. <span class="src" style="display:inline">(WHO 2009)</span></li>
+        <li><b>Dew point:</b> Magnus formula with Alduchov and Eskridge (1996) coefficients (a = 17.625, b = 243.04 &deg;C), valid from -40 &deg;C to 60 &deg;C (-40 &deg;F to 140 &deg;F). Treat results as an estimate. Instrument accuracy matters more than formula accuracy. <span class="src" style="display:inline">(Magnus formula)</span></li>
+      </ul>
+      <p class="hint">Items marked <b>Professional practice</b> reflect general building inspection practice. No single public standard covers them, so no standard is claimed.</p>
+      <h3 style="font-size:14px;margin:14px 0 6px">Technical standards for professionals (for reference, not reproduced)</h3>
+      <ul class="refs">
+        <li>BS 5250:2021 - Management of moisture in buildings. Code of practice (UK).</li>
+        <li>ISO 13788:2012 - Hygrothermal performance of building components and building elements. Internal surface temperature to avoid critical surface humidity and interstitial condensation. Calculation methods.</li>
+      </ul>
+      <h3 style="font-size:14px;margin:14px 0 6px">Source list</h3>
+      <ul class="srclist" id="srcList"></ul>
+      <div class="info" style="margin-top:10px"><b>Country-specific rules:</b> building regulations, seller disclosure duties, landlord obligations and approved damp-proofing methods differ between countries and regions. This tool does not state local legal requirements. Verify these with your local authority, conveyancer, agent or a registered building professional.</div>
+    </div>
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer><div class="wrap"><span>THE SNAG TAG &middot; BENEATH THE SURFACE COLLECTION &middot; SPECIALIST CHECK 01: DAMPNESS</span><span id="saveState">SAVED ON THIS DEVICE</span></div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+var KEY='snagtag_bts_dampness_v1';
+
+/* ---------- Data ---------- */
+var EXPOSURE=['Coastal','Inland','Windward facade','Sheltered facade','High humidity environment','Salt exposure','Heavy rainfall environment','Poor ventilation','Air-conditioned','Mixed-use / wet area'];
+
+var SWEEP=[
+ {id:'furn',g:'Behind furniture',a:'Behind furniture against external walls',h:'Wardrobes, beds, sofas, bookcases, storage units'},
+ {id:'ward',g:'Behind furniture',a:'Inside and behind wardrobes',h:'Back panel, corners, stored items, smell'},
+ {id:'beds',g:'Behind furniture',a:'Behind and under beds',h:'Wall behind headboard, floor under bed'},
+ {id:'cabs',g:'Enclosed spaces',a:'Inside cabinets and cupboards',h:'Back panels, base boards, swelling'},
+ {id:'sink',g:'Enclosed spaces',a:'Under sinks (kitchen, bathroom, laundry)',h:'Base board, pipe joints, traps, staining'},
+ {id:'appl',g:'Enclosed spaces',a:'Behind appliances',h:'Fridge, washing machine, dishwasher connections'},
+ {id:'util',g:'Enclosed spaces',a:'Utility and water heater cupboards',h:'Water heater / geyser / boiler area, valves, drip trays'},
+ {id:'roof',g:'Above ceilings',a:'Accessible roof or loft space (only if safe)',h:'Staining on timbers or underside of roof, damp insulation'},
+ {id:'pene',g:'Above ceilings',a:'Around roof penetrations',h:'Pipes, flues, vents, skylights, aerials'},
+ {id:'drain',g:'Above ceilings',a:'Near roof drainage points',h:'Gutters, downpipes, internal outlets, box gutters'},
+ {id:'floor',g:'Below floors',a:'Below floors (only where accessible and appropriate)',h:'Sub-floor voids, access hatches, cellar or basement'},
+ {id:'win',g:'Around openings',a:'Windows - frames and sills',h:'Inside and outside, corners, sealant'},
+ {id:'door',g:'Around openings',a:'Doors and sliding door tracks',h:'Thresholds, tracks, drainage holes'},
+ {id:'pipe',g:'Concealed services',a:'Plumbing routes and boxed-in pipes',h:'Boxing, ducts, ceilings below bathrooms'},
+ {id:'bath',g:'Concealed services',a:'Bathrooms',h:'Around bath and shower seals, grout, behind toilet, floor edges'},
+ {id:'kit',g:'Concealed services',a:'Kitchens',h:'Sink base, splashback edges, behind dishwasher'},
+ {id:'laun',g:'Concealed services',a:'Laundry areas',h:'Hoses, drains, floor edges'},
+ {id:'ac',g:'Concealed services',a:'Air-conditioning units and condensate drains',h:'Staining below indoor units, drain lines, drip points'},
+ {id:'fin',g:'Finishes',a:'Behind wallpaper, panelling and floor coverings (visual only)',h:'Lifting, bubbling, staining, odour. Do not remove finishes.'},
+ {id:'redec',g:'Finishes',a:'Isolated fresh paint or new finishes',h:'One patch or one wall newly painted while the rest is not'}
+];
+
+var CHECKS=[
+ {id:'mould',t:'Visible mould',r:'Check walls, ceilings, corners and concealed areas for visible mould growth.',m:'Location, approximate area in m² (ft²), pattern',p:'High'},
+ {id:'stain',t:'Wall staining',r:'Look for staining, tide marks, discolouration or blistering finishes.',m:'Height above floor, extent, location',p:'Medium'},
+ {id:'odour',t:'Musty odour',r:'Check for a persistent earthy or musty smell.',m:'Location, stronger in enclosed areas?',p:'Medium'},
+ {id:'cond',t:'Condensation',r:'Inspect cold surfaces, windows, frames and poorly ventilated rooms.',m:'Visible condensation, air temp, RH, surface temp',p:'Medium'},
+ {id:'paint',t:'Paint and finish failure',r:'Look for bubbling, peeling, flaking or powdering finishes.',m:'Affected area and the surface underneath',p:'Medium'},
+ {id:'skirt',t:'Skirting and lower wall damage',r:'Inspect skirting boards and lower wall finishes.',m:'Height of deterioration, location',p:'Medium'},
+ {id:'ceil',t:'Ceiling staining',r:'Inspect ceilings below roofs, bathrooms and wet areas.',m:'Stain position and approximate size',p:'High'},
+ {id:'plumb',t:'Plumbing proximity',r:'Identify dampness next to water supply, waste or drainage systems.',m:'Nearest pipe or fixture',p:'High'},
+ {id:'ext',t:'External wall exposure',r:'Inspect walls exposed to wind-driven rain or coastal weather.',m:'Wall orientation and exposure, where known',p:'Medium'},
+ {id:'ground',t:'Ground contact',r:'Inspect lower external walls and areas next to soil or paving.',m:'Relationship between wall base and ground or paving',p:'High'},
+ {id:'salts',t:'White crystalline deposits',r:'Look for white, powdery or crystalline deposits on walls or floors.',m:'Location, height, extent',p:'Medium'},
+ {id:'timber',t:'Timber condition',r:'Look for swollen, soft-looking, split or decayed timber at skirtings, frames and floors. Visual only.',m:'Location, which timber element',p:'High'},
+ {id:'floorc',t:'Floor coverings',r:'Look for lifting, swelling, staining or a damp smell in floor coverings.',m:'Room, area, type of covering',p:'Medium'},
+ {id:'gutter',t:'Gutters and downpipes',r:'From ground level, look for overflow staining, leaks, gaps, or downpipes discharging against walls.',m:'Location on elevation, what is below',p:'Medium'},
+ {id:'roofc',t:'Roof covering (from the ground)',r:'From the ground or a safe window, look for missing, slipped or damaged roof elements.',m:'Location relative to internal stains',p:'High'},
+ {id:'openj',t:'Window and door junctions',r:'Check sealant, sills and frame-to-wall junctions inside and outside.',m:'Which opening, which side, gaps or cracks',p:'Medium'},
+ {id:'vent',t:'Ventilation',r:'Check bathrooms, kitchens and laundry have working extraction or openable windows. Check vents are not blocked.',m:'Room, what is present, working yes/no',p:'Medium'},
+ {id:'corr',t:'Corrosion near moisture',r:'Look for corrosion on hardware, fasteners, railings, roof fixings, AC units and plumbing near damp areas.',m:'Component, location, extent. Electrical: do not touch.',p:'High'},
+ {id:'rh',t:'Indoor relative humidity',r:'Measure RH in main rooms with a thermo-hygrometer.',m:'RH %, air temp °C (°F). EPA: below 60%, ideally 30-50%',p:'Medium'},
+ {id:'conceal',t:'Signs of concealment',r:'Note isolated fresh paint, new sealant, furniture or rugs placed over one spot, or strong air fresheners.',m:'Location and what was seen. Ask, do not assume.',p:'Medium'}
+];
+
+/* Sources - every item is either cited to a public source or labelled Professional practice */
+var SRC={
+ EPA1:{n:'US EPA - A Brief Guide to Mold, Moisture and Your Home',d:'updated 18 Feb 2026',u:'https://www.epa.gov/mold/brief-guide-mold-moisture-and-your-home'},
+ EPA2:{n:'US EPA - Mold Course Chapter 2: Why and Where Mold Grows',d:'updated 1 Dec 2025',u:'https://www.epa.gov/mold/mold-course-chapter-2'},
+ EPA3:{n:'US EPA - Mold Remediation in Schools and Commercial Buildings, Chapter 3',d:'updated 29 Apr 2026',u:'https://www.epa.gov/mold/mold-remediation-schools-and-commercial-buildings-guide-chapter-3'},
+ EPA4:{n:'US EPA - Mold Cleanup in Your Home',d:'updated 4 Jun 2026',u:'https://www.epa.gov/mold/mold-cleanup-your-home'},
+ WHO:{n:'WHO - Guidelines for Indoor Air Quality: Dampness and Mould',d:'2009',u:'https://www.ncbi.nlm.nih.gov/books/NBK143943/'},
+ CDC:{n:'US CDC - What to Do to Protect Yourself From Electrical Hazards',d:'updated 25 Jan 2024',u:'https://www.cdc.gov/natural-disasters/response/what-to-do-protect-yourself-from-electrical-hazards.html'},
+ HSE:{n:'UK HSE - Fragile surfaces',d:'current web guidance',u:'https://www.hse.gov.uk/construction/safetytopics/fragile.htm'},
+ MAG:{n:'Alduchov and Eskridge (1996) - Improved Magnus form approximation of saturation vapor pressure',d:'1996',u:'https://www.osti.gov/biblio/548871'},
+ PP:{n:'Professional practice',d:'general building inspection practice, no single public standard',u:''}
+};
+var CK_SRC={mould:['EPA1','EPA3','WHO'],stain:['PP'],odour:['EPA2','EPA3'],cond:['EPA1','EPA2'],paint:['PP'],skirt:['PP'],ceil:['EPA2','PP'],plumb:['EPA1','EPA2'],ext:['PP'],ground:['EPA1','EPA2'],salts:['PP'],timber:['PP'],floorc:['EPA1','EPA3'],gutter:['EPA1','EPA2'],roofc:['EPA2','HSE'],openj:['PP'],vent:['EPA1'],corr:['CDC','PP'],rh:['EPA1','EPA2'],conceal:['EPA1','PP']};
+var SW_SRC={furn:['EPA2','EPA3'],ward:['EPA2','EPA3'],beds:['EPA2','EPA3'],cabs:['PP'],sink:['EPA1','EPA2'],appl:['EPA1','PP'],util:['PP'],roof:['EPA3','HSE'],pene:['EPA2','PP'],drain:['EPA1','EPA2'],floor:['EPA2'],win:['EPA1'],door:['PP'],pipe:['EPA3'],bath:['EPA1'],kit:['EPA1'],laun:['EPA1'],ac:['EPA1','EPA3'],fin:['EPA1','EPA3'],redec:['EPA1','PP']};
+function srcShort(k){return {EPA1:'EPA Brief Guide',EPA2:'EPA Mold Course',EPA3:'EPA Remediation Guide',EPA4:'EPA Mold Cleanup',WHO:'WHO 2009',CDC:'CDC Electrical',HSE:'UK HSE',MAG:'Magnus formula',PP:'Professional practice'}[k];}
+function srcTags(keys){return '<div class="src">Source: '+(keys||['PP']).map(function(k){return '<a href="#src-'+k+'" data-src="'+k+'" title="'+esc(SRC[k].n)+'">'+srcShort(k)+'</a>';}).join(' &middot; ')+'</div>';}
+
+/* Safe steps now - every step cited. Triggered from finding answers. */
+var STEPS={
+ leak:{t:'Act quickly on leaks and spills. Fix plumbing leaks and other water problems as soon as possible, and dry wet materials within 24-48 hours.',s:['EPA1','EPA2']},
+ rh:{t:'Keep indoor humidity below 60%, ideally 30-50%. Use air conditioning or a dehumidifier when needed.',s:['EPA1']},
+ shower:{t:'Run the bathroom fan or open the window when showering.',s:['EPA1']},
+ vent:{t:'Vent moisture-producing appliances (clothes dryers, stoves) to the outside where possible.',s:['EPA1']},
+ cond:{t:'Condensation on windows, walls or pipes: act quickly. Cover cold surfaces such as cold water pipes with insulation.',s:['EPA1']},
+ gutter:{t:'Clean and repair roof gutters regularly. Gutter work is work at height: UK HSE advises treating all roofs as fragile until a competent person confirms otherwise.',s:['EPA1','HSE']},
+ ground:{t:'Make sure the ground slopes away from the building foundation so water does not collect around it.',s:['EPA1']},
+ ac:{t:'Keep air-conditioning drip pans clean and drain lines unobstructed and flowing.',s:['EPA1']},
+ mouldSmall:{t:'Small mould areas (less than about 0.9 m² (10 ft²)): scrub hard surfaces with detergent and water, then dry completely. Wear an N-95 respirator, long gloves and goggles without ventilation holes.',s:['EPA1']},
+ mouldBig:{t:'Mould over about 0.9 m² (10 ft²), or a lot of water damage: consult a professional (EPA refers to its Mold Remediation in Schools and Commercial Buildings guide).',s:['EPA1']},
+ porous:{t:'Mouldy absorbent materials such as carpet and ceiling tiles may have to be thrown away.',s:['EPA1']},
+ noPaint:{t:'Do not paint or caulk mouldy surfaces. Clean and dry first.',s:['EPA1']},
+ hidden:{t:'Suspected hidden mould: consider an experienced professional. Do not strip wallpaper - it can release a large amount of spores.',s:['EPA1','EPA3']},
+ sewage:{t:'If damage was caused by sewage or other contaminated water, call a professional experienced with contaminated water damage.',s:['EPA4']},
+ hvac:{t:'Do not run the HVAC system if you know or suspect it is contaminated with mould.',s:['EPA4']},
+ elec:{t:'Wet electrical items: if it is safe to reach without standing in water, turn off power at the main breaker. Do not turn it back on until a qualified electrician has inspected it.',s:['CDC']}
+};
+function stepsFor(f){
+  var has=function(a,x){return a.indexOf(x)>-1;},k=[];
+  if(has(f.near,'Electrical socket / switch / fitting'))k.push('elec');
+  if(has(f.look,'Wet surface')||has(f.when,'After plumbing use')||has(f.loc,'Near plumbing')||has(f.near,'Water supply / waste pipe')||has(f.factors,'Plumbing'))k.push('leak');
+  if(has(f.look,'Mould')||has(f.look,'Dark spotting')){k.push('noPaint');if(f.area!=null&&f.area>=0.9)k.push('mouldBig');else k.push('mouldSmall');k.push('porous');}
+  if(has(f.look,'Musty odour only')||has(f.look,'No visible moisture'))k.push('hidden');
+  if(has(f.look,'Condensation droplets')||has(f.when,'Morning only')||has(f.when,'During humid weather')||has(f.factors,'Condensation')||has(f.factors,'Humid air'))k.push('cond','rh');
+  if(f.meas.rh!=null&&f.meas.rh>=60&&k.indexOf('rh')<0)k.push('rh');
+  if(has(f.when,'After showers')||has(f.loc,'Bathroom'))k.push('shower');
+  if(has(f.loc,'Kitchen')||has(f.loc,'Laundry'))k.push('vent');
+  if(has(f.near,'Roof or roof drainage')||has(f.factors,'Drainage')||(has(f.when,'After rain')&&(has(f.loc,'External wall')||has(f.loc,'Ceiling'))))k.push('gutter');
+  if(has(f.near,'Ground or paving outside')||has(f.factors,'Ground moisture'))k.push('ground');
+  if(has(f.near,'Air-conditioning unit'))k.push('ac');
+  return k.filter(function(x,i){return k.indexOf(x)===i;});
+}
+function stepHtml(key){var s=STEPS[key];return esc(s.t)+' <span class="src" style="display:inline">('+s.s.map(srcShort).join(', ')+')</span>';}
+
+var LOCS=['Internal wall','External wall','Ceiling','Floor','Around window / door','Bathroom','Kitchen','Laundry','Near plumbing','Basement / cellar','Roof / loft','Unknown'];
+var LOOKS=['Localised stain','Widespread staining','Tide mark','Peeling paint','Bubbling paint','Crumbling / plaster deterioration','White crystalline deposits','Mould','Dark spotting','Wet surface','Condensation droplets','Musty odour only','No visible moisture'];
+var WHEN=['Always','After rain','After showers','After plumbing use','Morning only','During humid weather','Seasonal','Unknown'];
+var NEAR=['Water supply / waste pipe','Electrical socket / switch / fitting','Window or door frame','Roof or roof drainage','Ground or paving outside','Air-conditioning unit','Metal fixings / railings / balcony','Furniture against wall','None of these'];
+var FACTORS=['Rainwater','Ground moisture','Plumbing','Drainage','Condensation','Humid air','Roof / waterproofing','Window / door penetration','Unknown'];
+
+var QUESTIONS=[
+ 'Has the property had any leaks, flooding or damp problems? When, where, and what was done?',
+ 'Has any damp-proofing, waterproofing or mould treatment been carried out? By whom, and is there a guarantee or report?',
+ 'Have there been any insurance claims for water damage?',
+ 'When was the roof last inspected or repaired?',
+ 'Have there been any plumbing leaks or repairs?',
+ 'Why was this area recently repainted or re-finished? (ask for any area you noted)',
+ 'Has the property been vacant or closed up for long periods?',
+ 'Are there any previous survey or inspection reports you can share?',
+ 'Do the extractor fans, AC units and their condensate drains work and get serviced?'
+];
+
+/* ---------- State ---------- */
+function blank(){return {v:1,settings:{mode:'buyer',theme:'light',unit:'C'},property:{exposure:[]},sweep:{},checks:{},findings:[],readings:[],questions:{},seq:0};}
+var S=blank();
+try{var raw=localStorage.getItem(KEY); if(raw){var o=JSON.parse(raw); if(o&&o.v===1){S=Object.assign(blank(),o);}}}catch(e){}
+var saveTimer=null;
+function flush(){
+  clearTimeout(saveTimer);saveTimer=null;
+  try{localStorage.setItem(KEY,JSON.stringify(S));$('#saveState').textContent='SAVED ON THIS DEVICE';}
+  catch(e){$('#saveState').textContent='NOT SAVED - STORAGE FULL';toast('Storage is full. Download a backup, then remove some photos.');}
+}
+function save(){clearTimeout(saveTimer);saveTimer=setTimeout(flush,250);}
+window.addEventListener('pagehide',function(){if(saveTimer)flush();});
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'&&saveTimer)flush();});
+
+/* ---------- Helpers ---------- */
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show');},2600);}
+function num(v){if(v===''||v==null)return null;var n=parseFloat(v);return isFinite(n)?n:null;}
+function r1(n){return Math.round(n*10)/10;}
+function c2f(c){return c*9/5+32;}
+function f2c(f){return (f-32)*5/9;}
+function tBoth(c){return c==null?'-':r1(c)+' °C ('+r1(c2f(c))+' °F)';}
+function mBoth(m){return m==null?'-':r1(m)+' m ('+r1(m*3.28084)+' ft)';}
+function aBoth(a){return a==null?'-':r1(a)+' m² ('+r1(a*10.7639)+' ft²)';}
+function inC(v){var n=num(v);if(n==null)return null;return S.settings.unit==='F'?f2c(n):n;}
+function toInput(c){if(c==null)return '';return S.settings.unit==='F'?r1(c2f(c)):r1(c);}
+function dewPoint(T,RH){ if(T==null||RH==null||RH<=0||RH>100)return null; var a=17.625,b=243.04; var g=Math.log(RH/100)+a*T/(b+T); return b*g/(a-g);}
+function now(){var d=new Date();return d.toISOString();}
+function fmtDate(iso){if(!iso)return '-';var d=new Date(iso);return d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});}
+
+/* ---------- Settings ---------- */
+function applySettings(){
+  document.documentElement.setAttribute('data-theme',S.settings.theme);
+  document.body.setAttribute('data-mode',S.settings.mode);
+  $$('#modeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.v===S.settings.mode);});
+  $$('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.v===S.settings.theme);});
+  $$('#unitSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.v===S.settings.unit);});
+  $$('.tu').forEach(function(e){e.innerHTML=S.settings.unit==='F'?'&deg;F':'&deg;C';});
+}
+function segBind(id,key,after){ $$('#'+id+' button').forEach(function(b){b.addEventListener('click',function(){S.settings[key]=b.dataset.v;applySettings();save();if(after)after();});}); }
+segBind('modeSeg','mode',function(){renderAll();});
+segBind('themeSeg','theme');
+segBind('unitSeg','unit',function(){renderReadingsCalc(true);if(curId)renderEditor();});
+
+/* ---------- Tabs ---------- */
+var curTab='start';
+function go(t){
+  curTab=t;
+  $$('.view').forEach(function(v){v.classList.add('hide');});
+  $('#view-'+t).classList.remove('hide');
+  $$('#tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.t===t);});
+  if(t==='report')renderReport();
+  if(t==='findings'&&!curId)showList();
+  window.scrollTo(0,0);
+}
+$$('#tabs button').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.t);});});
+$$('[data-go]').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.go);});});
+
+/* ---------- Property ---------- */
+function renderProperty(){
+  $$('[data-p]').forEach(function(el){el.value=S.property[el.dataset.p]||'';});
+  var h='';EXPOSURE.forEach(function(x){h+='<button type="button" class="chip'+(S.property.exposure.indexOf(x)>-1?' on':'')+'" data-x="'+esc(x)+'">'+esc(x)+'</button>';});
+  $('#exposureChips').innerHTML=h;
+}
+$$('[data-p]').forEach(function(el){el.addEventListener('input',function(){S.property[el.dataset.p]=el.value;save();});});
+$('#exposureChips').addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;var x=b.dataset.x,a=S.property.exposure,i=a.indexOf(x);if(i>-1)a.splice(i,1);else a.push(x);b.classList.toggle('on');save();});
+
+/* ---------- Sweep ---------- */
+var SW_ST=[['unchecked','Not checked'],['none','No signs'],['signs','Signs found'],['noaccess','No access']];
+function renderSweep(){
+  var h='',lastG='',done=0;
+  SWEEP.forEach(function(s){
+    var st=S.sweep[s.id]||{status:'unchecked'}; if(st.status!=='unchecked')done++;
+    if(s.g!==lastG){h+='<tr><td colspan="4" style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);padding-top:16px;border-bottom:1px solid var(--line)">'+esc(s.g)+'</td></tr>';lastG=s.g;}
+    h+='<tr data-id="'+s.id+'"><td data-l="Area"><b>'+esc(s.a)+'</b><div class="sub">'+esc(s.h)+'</div>'+srcTags(SW_SRC[s.id])+'</td><td data-l="Status"><div class="stat">';
+    SW_ST.forEach(function(o){h+='<button type="button" data-v="'+o[0]+'" class="'+(st.status===o[0]?'on':'')+'">'+o[1]+'</button>';});
+    h+='</div><input type="text" class="note-in" placeholder="Note (optional)" value="'+esc(st.note||'')+'"></td>';
+    h+='<td data-l="Possibly concealed?"><select class="conc"><option value="">-</option><option'+(st.conc==='No'?' selected':'')+'>No</option><option'+(st.conc==='Possibly'?' selected':'')+'>Possibly</option><option'+(st.conc==='Yes'?' selected':'')+'>Yes</option></select></td>';
+    h+='<td>'+(st.status==='signs'?'<button type="button" class="btn sm mk">+ Log finding</button>':'')+'</td></tr>';
+  });
+  $('#sweepTbl tbody').innerHTML=h;
+  $('#sweepCount').textContent=done+' / '+SWEEP.length+' CHECKED';
+}
+$('#sweepTbl').addEventListener('click',function(e){
+  var tr=e.target.closest('tr[data-id]');if(!tr)return;var id=tr.dataset.id;var st=S.sweep[id]||(S.sweep[id]={status:'unchecked'});
+  var b=e.target.closest('.stat button');
+  if(b){st.status=b.dataset.v;save();renderSweep();return;}
+  if(e.target.closest('.mk')){var s=SWEEP.filter(function(x){return x.id===id;})[0];newFinding({room:s.a,source:'Hidden Sweep: '+s.a});}
+});
+$('#sweepTbl').addEventListener('input',function(e){var tr=e.target.closest('tr[data-id]');if(!tr)return;var id=tr.dataset.id;var st=S.sweep[id]||(S.sweep[id]={status:'unchecked'});
+  if(e.target.classList.contains('note-in'))st.note=e.target.value; if(e.target.classList.contains('conc'))st.conc=e.target.value; save();});
+$('#sweepTbl').addEventListener('change',function(e){if(e.target.classList.contains('conc')){var tr=e.target.closest('tr[data-id]');var st=S.sweep[tr.dataset.id]||(S.sweep[tr.dataset.id]={status:'unchecked'});st.conc=e.target.value;save();}});
+
+/* ---------- Checks ---------- */
+var CK_ST=[['open','Open'],['ok','OK'],['finding','Finding'],['na','N/A']];
+var ckFilter='all';
+$$('#checkFilter button').forEach(function(b){b.addEventListener('click',function(){ckFilter=b.dataset.v;$$('#checkFilter button').forEach(function(x){x.classList.toggle('on',x===b);});renderChecks();});});
+function renderChecks(){
+  var h='',done=0;
+  CHECKS.forEach(function(c){
+    var st=S.checks[c.id]||{status:'open'}; if(st.status!=='open')done++;
+    if(ckFilter==='High'||ckFilter==='Medium'){if(c.p!==ckFilter)return;}
+    if(ckFilter==='open'&&st.status!=='open')return;
+    if(ckFilter==='finding'&&st.status!=='finding')return;
+    h+='<tr data-id="'+c.id+'"><td data-l="Check"><b>'+esc(c.t)+'</b><div class="sub">'+esc(c.r)+'</div>'+srcTags(CK_SRC[c.id])+'</td><td data-l="What to record">'+esc(c.m)+'</td><td data-l="Priority"><span class="risk '+c.p+'">'+c.p+'</span></td><td data-l="Status"><div class="stat">';
+    CK_ST.forEach(function(o){h+='<button type="button" data-v="'+o[0]+'" class="'+(st.status===o[0]?'on':'')+'">'+o[1]+'</button>';});
+    h+='</div><input type="text" class="note-in" placeholder="Note (optional)" value="'+esc(st.note||'')+'">'+(st.status==='finding'?'<div style="margin-top:6px"><button type="button" class="btn sm mk">+ Log finding</button></div>':'')+'</td></tr>';
+  });
+  if(!h)h='<tr><td colspan="4"><div class="empty">No checks match this filter.</div></td></tr>';
+  $('#checkTbl tbody').innerHTML=h;
+  $('#checkCount').textContent=done+' / '+CHECKS.length+' COMPLETED';
+}
+$('#checkTbl').addEventListener('click',function(e){
+  var tr=e.target.closest('tr[data-id]');if(!tr)return;var id=tr.dataset.id;var st=S.checks[id]||(S.checks[id]={status:'open'});
+  var b=e.target.closest('.stat button');
+  if(b){st.status=b.dataset.v;save();renderChecks();return;}
+  if(e.target.closest('.mk')){var c=CHECKS.filter(function(x){return x.id===id;})[0];newFinding({source:'Master check: '+c.t,risk:c.p});}
+});
+$('#checkTbl').addEventListener('input',function(e){var tr=e.target.closest('tr[data-id]');if(!tr)return;var st=S.checks[tr.dataset.id]||(S.checks[tr.dataset.id]={status:'open'});st.note=e.target.value;save();});
+
+/* ---------- Findings ---------- */
+var curId=null;
+function findById(id){return S.findings.filter(function(f){return f.id===id;})[0];}
+function newFinding(pre){
+  S.seq=(S.seq||0)+1;
+  var id='DAMP-'+String(S.seq).padStart(3,'0');
+  var f={id:id,created:now(),room:'',loc:[],height:null,area:null,look:[],when:[],near:[],desc:'',corrosion:'',meas:{},meter:{},photos:{},factors:[],risk:'',riskAuto:true,escalate:'',status:'Open',recheck:'',notes:'',source:''};
+  if(pre)Object.keys(pre).forEach(function(k){f[k]=pre[k];});
+  if(pre&&pre.risk)f.riskAuto=false;
+  S.findings.push(f);save();
+  go('findings');openFinding(id);
+}
+function showList(){curId=null;$('#findEdit').classList.add('hide');$('#findList').classList.remove('hide');renderFindList();}
+function openFinding(id){curId=id;$('#findList').classList.add('hide');$('#findEdit').classList.remove('hide');renderEditor();window.scrollTo(0,0);}
+$('#addFinding').addEventListener('click',function(){newFinding();});
+$('#newFindingStart').addEventListener('click',function(){newFinding();});
+$('#backToList').addEventListener('click',showList);
+
+function suggestRisk(f){
+  var hi=['Mould','Wet surface','Crumbling / plaster deterioration'];
+  var nearHi=['Electrical socket / switch / fitting','Water supply / waste pipe','Ground or paving outside','Roof or roof drainage'];
+  if(f.look.some(function(x){return hi.indexOf(x)>-1;}))return 'High';
+  if(f.near.some(function(x){return nearHi.indexOf(x)>-1;}))return 'High';
+  if(f.loc.indexOf('Ceiling')>-1||f.loc.indexOf('Roof / loft')>-1)return 'High';
+  if(f.corrosion==='Yes')return 'High';
+  var mm=measCalc(f); if(mm&&mm.margin!=null&&mm.margin<=0)return 'High';
+  if(f.look.length&&f.look.every(function(x){return x==='No visible moisture';}))return 'Low';
+  if(f.look.length||f.when.length||f.loc.length)return 'Medium';
+  return '';
+}
+function measCalc(f){
+  var T=f.meas.airT,RH=f.meas.rh,Sf=f.meas.surfT;
+  var dp=dewPoint(T,RH);
+  return {dp:dp,margin:(dp!=null&&Sf!=null)?Sf-dp:null};
+}
+function chipGroup(key,list,f){
+  var h='<div class="chips" data-k="'+key+'">';
+  list.forEach(function(x){h+='<button type="button" class="chip'+(f[key].indexOf(x)>-1?' on':'')+'" data-x="'+esc(x)+'">'+esc(x)+'</button>';});
+  return h+'</div>';
+}
+function stepH(n,tag,title){return '<div class="step-h"><div class="num">'+n+'</div><div><div class="tag">'+tag+'</div><h3>'+title+'</h3></div></div>';}
+function photoSlot(k,t,d,f){
+  var src=f.photos[k];
+  return '<div class="ph" data-ph="'+k+'"><div class="pt">'+t+'</div><div class="pd">'+d+'</div>'+(src?'<img alt="'+t+' photo" src="'+src+'"><div class="row"><label class="btn sm">Replace<input type="file" accept="image/*" capture="environment"></label><button type="button" class="btn sm danger rmph">Remove</button></div>':'<label class="btn sm">Add photo<input type="file" accept="image/*" capture="environment"></label>')+'</div>';
+}
+function renderEditor(){
+  var f=findById(curId);if(!f){showList();return;}
+  if(f.riskAuto){f.risk=suggestRisk(f);}
+  $('#edTitle').textContent=f.id;
+  var u=S.settings.unit==='F'?'°F':'°C';
+  var h='';
+  if(f.source)h+='<div class="info">Started from: '+esc(f.source)+'</div>';
+  h+='<div class="step">'+stepH(1,'Locate','Where is it?')+
+    '<div class="grid g3"><label class="f"><span>Room / area</span><input type="text" data-f="room" value="'+esc(f.room)+'" placeholder="e.g. Main bedroom, north wall"></label>'+
+    '<label class="f"><span>Height above floor (m)</span><input type="number" step="0.01" min="0" data-fn="height" value="'+(f.height==null?'':f.height)+'"><span class="conv">'+(f.height!=null?mBoth(f.height):'')+'</span></label>'+
+    '<label class="f"><span>Approx. affected area (m²)</span><input type="number" step="0.01" min="0" data-fn="area" value="'+(f.area==null?'':f.area)+'"><span class="conv">'+(f.area!=null?aBoth(f.area):'')+'</span></label></div>'+
+    '<div class="q">Location type</div>'+chipGroup('loc',LOCS,f)+'</div>';
+  h+='<div class="step">'+stepH(2,'Observe','What does it look like?')+chipGroup('look',LOOKS,f)+
+    '<div class="q">When does it appear?</div>'+chipGroup('when',WHEN,f)+
+    '<div class="q">What is next to it?</div>'+chipGroup('near',NEAR,f)+
+    '<div class="q">Is there visible corrosion or deterioration of metal parts nearby?</div><div class="chips" data-single="corrosion">'+['Yes','No','Not applicable'].map(function(x){return '<button type="button" class="chip'+(f.corrosion===x?' on':'')+'" data-x="'+x+'">'+x+'</button>';}).join('')+'</div>'+
+    '<label class="f" style="margin-top:12px"><span>Describe what you see (facts only)</span><textarea data-f="desc" placeholder="e.g. Brown staining about 0.3 m wide, edge darker than centre, paint bubbling at top edge">'+esc(f.desc)+'</textarea></label></div>';
+  var mc=measCalc(f);
+  h+='<div class="step">'+stepH(3,'Measure','Readings at the finding')+
+    '<div class="grid g3"><label class="f"><span>Air temperature ('+u+')</span><input type="number" step="0.1" data-fm="airT" value="'+toInput(f.meas.airT)+'"><span class="conv">'+(f.meas.airT!=null?tBoth(f.meas.airT):'')+'</span></label>'+
+    '<label class="f"><span>Relative humidity (%)</span><input type="number" step="1" min="1" max="100" data-fm="rh" value="'+(f.meas.rh==null?'':f.meas.rh)+'"></label>'+
+    '<label class="f"><span>Surface temperature ('+u+')</span><input type="number" step="0.1" data-fm="surfT" value="'+toInput(f.meas.surfT)+'"><span class="conv">'+(f.meas.surfT!=null?tBoth(f.meas.surfT):'')+'</span></label></div>'+
+    '<div id="edDew">'+dewHtml(f.meas.airT,f.meas.rh,f.meas.surfT)+'</div>'+
+    '<div class="q">Moisture meter (only if you have one)</div>'+
+    '<div class="grid g3"><label class="f"><span>Instrument / model</span><input type="text" data-fmt="instrument" value="'+esc(f.meter.instrument||'')+'"></label>'+
+    '<label class="f"><span>Material tested</span><input type="text" data-fmt="material" value="'+esc(f.meter.material||'')+'" placeholder="e.g. gypsum plaster, timber skirting"></label>'+
+    '<label class="f"><span>Reading (as displayed)</span><input type="text" data-fmt="reading" value="'+esc(f.meter.reading||'')+'" placeholder="e.g. 42 (scale)"></label>'+
+    '<label class="f"><span>Meter setting / mode</span><input type="text" data-fmt="mode" value="'+esc(f.meter.mode||'')+'" placeholder="e.g. pin, timber scale"></label>'+
+    '<label class="f"><span>Reading type</span><select data-fmt="basis"><option value="">Select</option>'+['Comparative (relative scale)','Calibrated for this material','Unknown'].map(function(x){return '<option'+(f.meter.basis===x?' selected':'')+'>'+x+'</option>';}).join('')+'</select></label>'+
+    '<label class="f"><span>Dry reference reading (same material, dry area)</span><input type="text" data-fmt="ref" value="'+esc(f.meter.ref||'')+'"></label></div>'+
+    '<p class="hint">Record meter readings as evidence only. There is no universal "safe %" for all materials. Compare with a dry area of the same material using the same meter.</p></div>';
+  h+='<div class="step">'+stepH(4,'Photograph','Three-photo evidence set')+
+    '<div class="photos">'+photoSlot('context','1 - Context','Where it is in the room or building',f)+photoSlot('close','2 - Close-up','The defect itself',f)+photoSlot('relation','3 - Relationship','What is above, below, beside or outside',f)+'</div>'+
+    '<p class="hint">Photos are compressed and saved on this device only.</p></div>';
+  h+='<div class="step">'+stepH(5,'Classify','Possible contributing factors')+
+    '<p class="hint" style="margin-top:0">Tick what the evidence could point to. These are possibilities to investigate, not conclusions.</p>'+chipGroup('factors',FACTORS,f)+
+    '<div class="q">Investigation priority</div><div class="row"><div class="seg" id="riskSeg">'+['High','Medium','Low'].map(function(x){return '<button type="button" data-v="'+x+'" class="'+(f.risk===x?'on':'')+'">'+x+'</button>';}).join('')+'</div>'+
+    '<span class="hint">'+(f.riskAuto?'Suggested from your answers. Tap to set your own.':'Set by you. <a href="#" id="riskAutoBtn">Use suggestion</a>')+'</span></div></div>';
+  h+='<div class="step">'+stepH(6,'Escalate','Further investigation')+
+    '<div class="chips" data-single="escalate">'+['Required','Not currently indicated','Undecided'].map(function(x){return '<button type="button" class="chip'+(f.escalate===x?' on':'')+'" data-x="'+x+'">'+x+'</button>';}).join('')+'</div>'+
+    '<div class="grid g2" style="margin-top:12px"><label class="f"><span>Status</span><select data-f="status">'+['Open','Monitoring','Referred to professional','Resolved'].map(function(x){return '<option'+(f.status===x?' selected':'')+'>'+x+'</option>';}).join('')+'</select></label>'+
+    '<label class="f owner-only"><span>Re-check date</span><input type="date" data-f="recheck" value="'+esc(f.recheck)+'"></label></div>'+
+    '<label class="f" style="margin-top:12px"><span>Notes</span><textarea data-f="notes">'+esc(f.notes)+'</textarea></label></div>';
+  h+='<div class="row" style="margin-top:6px"><button type="button" class="btn pri" id="doneFinding">Save and close</button><button type="button" class="btn danger" id="delFinding">Delete finding</button></div>';
+  $('#edBody').innerHTML=h;
+  renderPrompts(f);
+}
+function dewHtml(T,RH,Sf){
+  var dp=dewPoint(T,RH);
+  if(dp==null)return '<p class="hint">Enter air temperature and RH to calculate the dew point.</p>';
+  var margin=Sf!=null?Sf-dp:null, h='<div class="dew-out"><div class="kpi"><div class="k">Dew point</div><div class="v">'+r1(dp)+' °C</div><div class="s">('+r1(c2f(dp))+' °F)</div></div>';
+  h+='<div class="kpi"><div class="k">Surface minus dew point</div><div class="v">'+(margin==null?'-':(margin>0?'+':'')+r1(margin)+' °C')+'</div><div class="s">'+(margin==null?'Add a surface temperature':'('+(margin>0?'+':'')+r1(margin*9/5)+' °F difference)')+'</div></div>';
+  h+='<div class="kpi"><div class="k">Indoor RH vs EPA guidance</div><div class="v">'+RH+'%</div><div class="s">'+(RH>=60?'At or above 60% - above EPA recommended limit':(RH>50?'Below 60%, above the ideal 30-50%':(RH>=30?'Within the ideal 30-50%':'Below 30%')))+'</div></div></div>';
+  if(margin!=null){
+    if(margin<=0)h+='<div class="warn" style="margin-top:10px"><b>Surface at or below dew point:</b> condensation can form on this surface at the time of measurement.</div>';
+    else h+='<div class="ok" style="margin-top:10px">Surface is above the dew point at the time of measurement. The smaller the margin, the closer the surface is to condensation. Conditions change through the day, so repeat readings.</div>';
+  }
+  return h;
+}
+
+/* Pattern recognition - rule based, never diagnoses */
+function buildPrompts(f){
+  var has=function(arr,x){return arr.indexOf(x)>-1;};
+  var ind=[],next=[],warn=[],esc_=[];
+  f.loc.forEach(function(x){ind.push(x);});
+  f.look.forEach(function(x){ind.push(x);});
+  f.when.forEach(function(x){if(x!=='Unknown')ind.push('Appears: '+x.toLowerCase());});
+  f.near.forEach(function(x){if(x!=='None of these')ind.push('Near: '+x.toLowerCase());});
+  var ceilingish=has(f.loc,'Ceiling')||has(f.loc,'Roof / loft');
+  var rain=has(f.when,'After rain');
+  if(has(f.near,'Electrical socket / switch / fitting')||(f.corrosion==='Yes'&&has(f.near,'Electrical socket / switch / fitting')))
+    warn.push('Water near electrical items: do not touch. Ask a qualified electrician to inspect.');
+  if(has(f.look,'Mould')){
+    warn.push('Do not paint or caulk over mould. Clean and dry first (US EPA).');
+    if(f.area!=null&&f.area>=0.9)esc_.push('Mould area is about 0.9 m² (10 ft²) or more. US EPA advises consulting professionals for larger areas.');
+    next.push('Look for hidden mould behind furniture, wallpaper, panelling and floor coverings nearby (visual only).');
+  }
+  if(ceilingish&&rain){next.push('Roof covering above the affected area (from the ground only).','Roof penetrations and junctions (pipes, flues, skylights).','Gutters and downpipes serving this area.','Whether the stain changes after the next rainfall - photograph it again.');}
+  else if(ceilingish){next.push('What is directly above: bathroom, plumbing, AC unit or roof.','Accessible roof space above, only if access is safe.','Whether the stain changes after rain, showers or plumbing use.');}
+  if(rain&&(has(f.loc,'External wall')||has(f.loc,'Around window / door'))){next.push('External wall surface and render or pointing on the same wall.','Window and door frame junctions, sills and sealant.','Gutters and downpipes above this wall.');}
+  if(has(f.loc,'Around window / door')||has(f.near,'Window or door frame'))next.push('Sealant, sill and frame-to-wall junction inside and outside.');
+  if(has(f.when,'After showers')||has(f.loc,'Bathroom')){next.push('Bath and shower seals, grout and tile edges.','Extraction fan or window - does it work and is it used?','Whether the area changes after a shower.');}
+  if(has(f.when,'After plumbing use')||has(f.loc,'Near plumbing')||has(f.near,'Water supply / waste pipe')){next.push('Visible pipe joints, traps and fixture connections nearby.','Whether the area changes after taps, toilet or appliances are used.');esc_.push('A possible plumbing link should be checked by a licensed plumber.');}
+  if(has(f.when,'Morning only')||has(f.when,'During humid weather')||has(f.look,'Condensation droplets')){next.push('Compare surface temperature with the dew point (Readings tab or step 3).','Ventilation and airflow in the room, especially overnight.','Furniture pushed against external walls.');}
+  if(has(f.look,'Tide mark')||has(f.look,'White crystalline deposits')||has(f.near,'Ground or paving outside')||(has(f.loc,'Internal wall')&&f.height!=null&&f.height<=1)){next.push('Outside the same wall: ground or paving level against the wall base.','Drainage and water discharging near the wall base.','Any material bridging from the ground up the wall outside.');esc_.push('Lower-wall dampness has several possible sources. A specialist moisture investigation can establish the source.');}
+  if(has(f.near,'Air-conditioning unit'))next.push('AC condensate drain line and drip points; staining below the indoor unit.');
+  if(has(f.near,'Metal fixings / railings / balcony')||f.corrosion==='Yes')next.push('Record corrosion location and extent with a close-up photo.');
+  if(has(f.near,'Furniture against wall'))next.push('Move furniture only with permission; check the wall behind and the back of the furniture.');
+  if(has(f.look,'Musty odour only')||has(f.look,'No visible moisture'))next.push('Run the Hidden Sweep for this room: cupboards, under sinks, behind appliances.');
+  if(has(f.look,'Crumbling / plaster deterioration'))esc_.push('Material deterioration: ask a building professional to assess the extent.');
+  var p=S.property.exposure;
+  if(p.indexOf('Coastal')>-1||p.indexOf('Salt exposure')>-1||p.indexOf('Windward facade')>-1)next.push('Coastal or exposed site: record it as context. Still check rainwater, plumbing, condensation and ground sources.');
+  var mc=measCalc(f);
+  if(mc.margin!=null&&mc.margin<=0)warn.push('Measured surface temperature is at or below the dew point.');
+  if(f.meas.rh!=null&&f.meas.rh>=60)ind.push('RH '+f.meas.rh+'% (EPA: keep below 60%)');
+  esc_.push('The source is not established by visual observation alone. Further investigation may be appropriate.');
+  if(has(f.look,'Wet surface'))next.push('Note the time and conditions; wet materials dried within 24-48 hours usually do not grow mould (US EPA).');
+  function uniq(a){return a.filter(function(x,i){return a.indexOf(x)===i;});}
+  return {ind:uniq(ind),next:uniq(next),warn:uniq(warn),esc:uniq(esc_)};
+}
+function renderPrompts(f){
+  var p=buildPrompts(f),h='';
+  p.warn.forEach(function(w){h+='<div class="warn"><b>Safety:</b> '+esc(w)+'</div>';});
+  h+='<h4>Observation pattern</h4>';
+  h+=p.ind.length?'<ul>'+p.ind.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'<p class="hint">Tick what you see and when it appears. Prompts build as you go.</p>';
+  if(p.next.length)h+='<h4>Check next</h4><ul>'+p.next.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';
+  if(p.esc.length)h+='<h4>Escalation</h4><ul>'+p.esc.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';
+  var st=stepsFor(f);
+  if(st.length)h+='<h4>'+(S.settings.mode==='buyer'?'Safe steps (for the owner)':'Safe steps now')+'</h4><ul class="steps">'+st.map(function(k){return '<li>'+stepHtml(k)+'</li>';}).join('')+'</ul>';
+  h+='<p class="hint" style="margin:0">These prompts organise evidence. They do not identify the cause. "Check next" and "Escalation" prompts: professional practice. Safe steps: cited as shown.</p>';
+  $('#promptBox').innerHTML=h;
+}
+function refreshSide(f){
+  if(f.riskAuto){f.risk=suggestRisk(f);$$('#riskSeg button').forEach(function(b){b.classList.toggle('on',b.dataset.v===f.risk);});}
+  renderPrompts(f);
+}
+$('#edBody').addEventListener('click',function(e){
+  var f=findById(curId);if(!f)return;
+  var chip=e.target.closest('.chip');
+  if(chip){
+    var grp=chip.parentNode,x=chip.dataset.x;
+    if(grp.dataset.k){var a=f[grp.dataset.k],i=a.indexOf(x);if(i>-1)a.splice(i,1);else a.push(x);chip.classList.toggle('on');}
+    else if(grp.dataset.single){var k=grp.dataset.single;f[k]=f[k]===x?'':x;$$('.chip',grp).forEach(function(c){c.classList.toggle('on',c.dataset.x===f[k]);});}
+    save();refreshSide(f);return;
+  }
+  var rb=e.target.closest('#riskSeg button');
+  if(rb){f.risk=rb.dataset.v;f.riskAuto=false;save();renderEditor();return;}
+  if(e.target.id==='riskAutoBtn'){e.preventDefault();f.riskAuto=true;save();renderEditor();return;}
+  if(e.target.closest('.rmph')){var k2=e.target.closest('[data-ph]').dataset.ph;delete f.photos[k2];save();renderEditor();return;}
+  if(e.target.id==='doneFinding'){save();toast(f.id+' saved');showList();return;}
+  if(e.target.id==='delFinding'){
+    if(e.target.dataset.confirm){S.findings=S.findings.filter(function(x){return x.id!==f.id;});save();toast(f.id+' deleted');showList();}
+    else{e.target.dataset.confirm='1';e.target.textContent='Tap again to delete';setTimeout(function(){if(e.target){delete e.target.dataset.confirm;e.target.textContent='Delete finding';}},3000);}
+  }
+});
+$('#edBody').addEventListener('input',function(e){
+  var f=findById(curId);if(!f)return;var t=e.target;
+  if(t.dataset.f){f[t.dataset.f]=t.value;}
+  else if(t.dataset.fn){f[t.dataset.fn]=num(t.value);var c=t.parentNode.querySelector('.conv');if(c)c.textContent=f[t.dataset.fn]==null?'':(t.dataset.fn==='height'?mBoth(f.height):aBoth(f.area));}
+  else if(t.dataset.fm){var k=t.dataset.fm;f.meas[k]=(k==='rh')?num(t.value):inC(t.value);var c2=t.parentNode.querySelector('.conv');if(c2)c2.textContent=(k!=='rh'&&f.meas[k]!=null)?tBoth(f.meas[k]):'';$('#edDew').innerHTML=dewHtml(f.meas.airT,f.meas.rh,f.meas.surfT);}
+  else if(t.dataset.fmt){f.meter[t.dataset.fmt]=t.value;}
+  else return;
+  save();refreshSide(f);
+});
+$('#edBody').addEventListener('change',function(e){
+  var t=e.target;
+  if(t.type==='file'&&t.files&&t.files[0]){
+    var f=findById(curId),k=t.closest('[data-ph]').dataset.ph;
+    compress(t.files[0],function(url){if(!url){toast('Could not read that image.');return;}f.photos[k]=url;save();renderEditor();});
+  } else if(t.tagName==='SELECT'&&(t.dataset.f||t.dataset.fmt)){var f2=findById(curId);if(t.dataset.f)f2[t.dataset.f]=t.value;else f2.meter[t.dataset.fmt]=t.value;save();}
+});
+function compress(file,cb){
+  var rd=new FileReader();
+  rd.onload=function(){var img=new Image();img.onload=function(){
+    var max=900,w=img.width,h=img.height,sc=Math.min(1,max/Math.max(w,h));
+    var c=document.createElement('canvas');c.width=Math.round(w*sc);c.height=Math.round(h*sc);
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    try{cb(c.toDataURL('image/jpeg',0.62));}catch(err){cb(null);}
+  };img.onerror=function(){cb(null);};img.src=rd.result;};
+  rd.onerror=function(){cb(null);};
+  rd.readAsDataURL(file);
+}
+function renderFindList(){
+  var h='';
+  $('#findCount').textContent=S.findings.length+' FINDING'+(S.findings.length===1?'':'S');
+  if(!S.findings.length){h='<div class="empty">No findings yet. Tap <b>+ New finding</b> when you notice something, or log one from the Hidden Sweep or Master Checks.</div>';}
+  S.findings.forEach(function(f){
+    var pc=Object.keys(f.photos).length;
+    h+='<div class="fcard '+(f.risk||'')+'"><div><div class="row"><span class="fid">'+f.id+'</span>'+(f.risk?'<span class="risk '+f.risk+'">'+f.risk+'</span>':'')+'<span class="hint">'+esc(f.status)+'</span></div>'+
+      '<div style="margin-top:4px"><b>'+esc(f.room||'Location not set')+'</b></div>'+
+      '<div class="meta">'+esc(f.look.join(', ')||'No observations yet')+'</div>'+
+      '<div class="meta">Photos: '+pc+'/3 &middot; Escalation: '+esc(f.escalate||'not set')+(f.recheck&&S.settings.mode==='owner'?' &middot; Re-check: '+esc(f.recheck):'')+'</div></div>'+
+      '<div><button type="button" class="btn sm" data-open="'+f.id+'">Open</button></div></div>';
+  });
+  $('#findItems').innerHTML=h;
+}
+$('#findItems').addEventListener('click',function(e){var b=e.target.closest('[data-open]');if(b)openFinding(b.dataset.open);});
+
+/* ---------- Readings ---------- */
+function renderReadingsCalc(convert){
+  if(convert){
+    ['dcT','dcS'].forEach(function(id){var el=$('#'+id);if(el.dataset.c!==undefined&&el.dataset.c!==''){el.value=toInput(parseFloat(el.dataset.c));}});
+  }
+  var T=num($('#dcT').dataset.c),RH=num($('#dcRH').value),Sf=num($('#dcS').dataset.c);
+  $('#dcTc').textContent=T!=null?tBoth(T):'';$('#dcSc').textContent=Sf!=null?tBoth(Sf):'';
+  $('#dcOut').innerHTML=dewHtml(T,RH,Sf);
+}
+['dcT','dcS'].forEach(function(id){$('#'+id).addEventListener('input',function(e){var c=inC(e.target.value);e.target.dataset.c=c==null?'':c;renderReadingsCalc();});});
+$('#dcRH').addEventListener('input',function(){renderReadingsCalc();});
+$('#dcSave').addEventListener('click',function(){
+  var T=num($('#dcT').dataset.c),RH=num($('#dcRH').value),Sf=num($('#dcS').dataset.c);
+  if(T==null||RH==null){toast('Enter at least air temperature and RH.');return;}
+  if(RH<=0||RH>100){toast('RH must be between 1 and 100%.');return;}
+  S.readings.push({at:now(),loc:$('#dcLoc').value,T:T,RH:RH,S:Sf});save();renderReadings();toast('Reading saved');
+});
+function renderReadings(){
+  var h='';
+  S.readings.slice().reverse().forEach(function(r,idx){
+    var dp=dewPoint(r.T,r.RH),m=(dp!=null&&r.S!=null)?r.S-dp:null,real=S.readings.length-1-idx;
+    h+='<tr><td data-l="Date / time">'+fmtDate(r.at)+'</td><td data-l="Location">'+esc(r.loc||'-')+'</td><td data-l="Air">'+tBoth(r.T)+'</td><td data-l="RH">'+r.RH+'%'+(r.RH>=60?' <span class="risk Medium">&ge;60</span>':'')+'</td><td data-l="Surface">'+tBoth(r.S)+'</td><td data-l="Dew point">'+tBoth(dp)+'</td><td data-l="Margin">'+(m==null?'-':(m<=0?'<span class="risk High">'+r1(m)+' °C</span>':'+'+r1(m)+' °C ('+r1(m*9/5)+' °F)'))+'</td><td><button type="button" class="btn sm ghost" data-rdel="'+real+'">Remove</button></td></tr>';
+  });
+  if(!h)h='<tr><td colspan="8"><div class="empty">No readings saved yet.</div></td></tr>';
+  $('#rdTbl tbody').innerHTML=h;
+  $('#rdCount').textContent=S.readings.length+' READING'+(S.readings.length===1?'':'S');
+}
+$('#rdTbl').addEventListener('click',function(e){var b=e.target.closest('[data-rdel]');if(!b)return;S.readings.splice(parseInt(b.dataset.rdel,10),1);save();renderReadings();});
+
+/* ---------- Report ---------- */
+function renderReport(){
+  var P=S.property,mode=S.settings.mode==='buyer'?'Pre-Purchase':'Maintenance';
+  var hi=0,md=0,lo=0,esc_=0;S.findings.forEach(function(f){if(f.risk==='High')hi++;else if(f.risk==='Medium')md++;else if(f.risk==='Low')lo++;if(f.escalate==='Required')esc_++;});
+  var h='<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:14px">'+
+    '<div><div style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--cyan)">THE SNAG TAG &middot; BENEATH THE SURFACE</div><h2 style="margin:4px 0 0;font-size:22px">Dampness Investigation Record</h2><div class="hint">'+mode+' inspection</div></div>'+
+    '<div style="font-family:var(--mono);font-size:12px;text-align:right">'+esc(P.name||'Property')+'<br>'+esc(P.address||'')+'<br>Date: '+esc(P.date||'-')+'<br>By: '+esc(P.inspector||'-')+'</div></div>';
+  h+='<div class="sum-grid"><div class="kpi"><div class="k">Findings</div><div class="v">'+S.findings.length+'</div></div><div class="kpi"><div class="k">High priority</div><div class="v" style="color:var(--high)">'+hi+'</div></div><div class="kpi"><div class="k">Medium / Low</div><div class="v">'+md+' / '+lo+'</div></div><div class="kpi"><div class="k">Further investigation</div><div class="v">'+esc_+'</div></div></div>';
+  h+='<h3 style="font-size:15px;margin:18px 0 6px">Conditions</h3><p style="margin:0;font-size:14px">Type: '+esc(P.type||'-')+' &middot; Built: '+esc(P.age||'-')+' &middot; Weather: '+esc(P.weather||'-')+' &middot; Recent rain: '+esc(P.rain||'-')+(S.settings.mode==='buyer'?' &middot; Occupied: '+esc(P.occupied||'-'):'')+'<br>Exposure (context only): '+esc(P.exposure.join(', ')||'-')+'</p>'+(P.notes?'<p style="font-size:14px">'+esc(P.notes)+'</p>':'');
+  h+='<h3 style="font-size:15px;margin:18px 0 6px">Findings</h3>';
+  if(!S.findings.length)h+='<p class="hint">No findings recorded.</p>';
+  S.findings.forEach(function(f){
+    var p=buildPrompts(f),mc=measCalc(f);
+    h+='<div class="rep-f"><div class="row"><span class="fid">'+f.id+'</span>'+(f.risk?'<span class="risk '+f.risk+'">'+f.risk+'</span>':'')+'<b>'+esc(f.room||'')+'</b></div><dl>'+
+      '<dt>Location type</dt><dd>'+esc(f.loc.join(', ')||'-')+'</dd>'+
+      '<dt>Height / area</dt><dd>'+mBoth(f.height)+' &middot; '+aBoth(f.area)+'</dd>'+
+      '<dt>Observation</dt><dd>'+esc(f.look.join(', ')||'-')+(f.desc?'<br>'+esc(f.desc):'')+'</dd>'+
+      '<dt>Pattern</dt><dd>'+esc(f.when.join(', ')||'-')+'</dd>'+
+      '<dt>Nearby</dt><dd>'+esc(f.near.join(', ')||'-')+(f.corrosion?' &middot; Corrosion: '+esc(f.corrosion):'')+'</dd>'+
+      '<dt>Measurements</dt><dd>Air '+tBoth(f.meas.airT)+' &middot; RH '+(f.meas.rh==null?'-':f.meas.rh+'%')+' &middot; Surface '+tBoth(f.meas.surfT)+' &middot; Dew point '+tBoth(mc.dp)+'</dd>'+
+      '<dt>Moisture meter</dt><dd>'+(f.meter.reading?esc(f.meter.reading)+' ('+esc(f.meter.instrument||'meter')+', '+esc(f.meter.material||'material n/a')+', '+esc(f.meter.basis||'type n/a')+')'+(f.meter.ref?' &middot; Dry reference: '+esc(f.meter.ref):''):'-')+'</dd>'+
+      '<dt>Possible factors</dt><dd>'+esc(f.factors.join(', ')||'Not classified')+'</dd>'+
+      '<dt>Further investigation</dt><dd>'+esc(f.escalate||'-')+' &middot; Status: '+esc(f.status)+(f.recheck?' &middot; Re-check: '+esc(f.recheck):'')+'</dd>'+
+      (p.next.length?'<dt>Check next</dt><dd>'+p.next.map(esc).join('<br>')+'</dd>':'')+
+      (stepsFor(f).length?'<dt>Safe steps</dt><dd>'+stepsFor(f).map(stepHtml).join('<br>')+'</dd>':'')+
+      (p.esc.length?'<dt>Escalation notes</dt><dd>'+p.esc.map(esc).join('<br>')+'</dd>':'')+
+      (p.warn.length?'<dt>Safety</dt><dd>'+p.warn.map(esc).join('<br>')+'</dd>':'')+
+      (f.notes?'<dt>Notes</dt><dd>'+esc(f.notes)+'</dd>':'')+'</dl>';
+    var ph=[['context','Context'],['close','Close-up'],['relation','Relationship']].filter(function(x){return f.photos[x[0]];});
+    if(ph.length)h+='<div class="rep-photos">'+ph.map(function(x){return '<figure><img alt="'+x[1]+'" src="'+f.photos[x[0]]+'"><figcaption>'+x[1]+'</figcaption></figure>';}).join('')+'</div>';
+    h+='</div>';
+  });
+  var sw=SWEEP.filter(function(s){return S.sweep[s.id]&&S.sweep[s.id].status!=='unchecked';});
+  h+='<h3 style="font-size:15px;margin:18px 0 6px">Hidden Sweep</h3>';
+  h+=sw.length?'<table class="tbl"><thead><tr><th>Area</th><th>Result</th><th>Concealed?</th><th>Note</th></tr></thead><tbody>'+sw.map(function(s){var st=S.sweep[s.id];return '<tr><td>'+esc(s.a)+'</td><td>'+esc(SW_ST.filter(function(o){return o[0]===st.status;})[0][1])+'</td><td>'+esc(st.conc||'-')+'</td><td>'+esc(st.note||'')+'</td></tr>';}).join('')+'</tbody></table>':'<p class="hint">Not started.</p>';
+  var nc=SWEEP.length-sw.length; if(nc>0)h+='<p class="hint">'+nc+' area(s) not checked.</p>';
+  var ck=CHECKS.filter(function(c){return S.checks[c.id]&&S.checks[c.id].status!=='open';});
+  h+='<h3 style="font-size:15px;margin:18px 0 6px">Master Checks</h3>';
+  h+=ck.length?'<table class="tbl"><thead><tr><th>Check</th><th>Priority</th><th>Result</th><th>Note</th></tr></thead><tbody>'+ck.map(function(c){var st=S.checks[c.id];return '<tr><td>'+esc(c.t)+'</td><td><span class="risk '+c.p+'">'+c.p+'</span></td><td>'+esc(CK_ST.filter(function(o){return o[0]===st.status;})[0][1])+'</td><td>'+esc(st.note||'')+'</td></tr>';}).join('')+'</tbody></table>':'<p class="hint">Not started.</p>';
+  var oc=CHECKS.length-ck.length; if(oc>0)h+='<p class="hint">'+oc+' check(s) still open.</p>';
+  if(S.readings.length){h+='<h3 style="font-size:15px;margin:18px 0 6px">Readings log</h3><table class="tbl"><thead><tr><th>Date / time</th><th>Location</th><th>Air</th><th>RH</th><th>Surface</th><th>Dew point</th></tr></thead><tbody>'+S.readings.map(function(r){return '<tr><td>'+fmtDate(r.at)+'</td><td>'+esc(r.loc||'-')+'</td><td>'+tBoth(r.T)+'</td><td>'+r.RH+'%</td><td>'+tBoth(r.S)+'</td><td>'+tBoth(dewPoint(r.T,r.RH))+'</td></tr>';}).join('')+'</tbody></table>';}
+  if(S.settings.mode==='buyer'){
+    h+='<h3 style="font-size:15px;margin:18px 0 6px">Questions for the seller or agent</h3><div class="no-print hint" style="margin-bottom:6px">Tick the questions you want on your printed record.</div><ul style="list-style:none;padding:0;margin:0" id="qList">';
+    QUESTIONS.forEach(function(q,i){var on=S.questions[i]!==false;h+='<li style="margin-bottom:6px;'+(on?'':'opacity:.45')+'" class="'+(on?'':'no-print')+'"><label style="display:flex;gap:8px;align-items:flex-start;font-size:14px"><input type="checkbox" data-q="'+i+'"'+(on?' checked':'')+'> <span>'+esc(q)+'</span></label></li>';});
+    h+='</ul><p class="hint">Seller disclosure duties differ between countries. Check with your conveyancer or agent.</p>';
+  }
+  h+='<div class="info" style="margin-top:18px"><b>Important:</b> this record documents what was observed, where, what was measured and what evidence was collected. It is not a diagnosis of the cause of dampness and does not replace an inspection by a suitably qualified professional.</div>';
+  h+='<h3 style="font-size:15px;margin:18px 0 6px">Sources</h3><ul class="srclist">'+Object.keys(SRC).map(function(k){var s=SRC[k];return '<li><b>'+esc(s.n)+'</b> ('+esc(s.d)+')'+(s.u?'<br><span class="hint">'+esc(s.u)+'</span>':'')+'</li>';}).join('')+'</ul>';
+  $('#reportBody').innerHTML=h;
+}
+$('#reportBody').addEventListener('change',function(e){var q=e.target.dataset.q;if(q==null)return;S.questions[q]=e.target.checked;save();renderReport();});
+$('#printBtn').addEventListener('click',function(){renderReport();window.print();});
+$('#exportBtn').addEventListener('click',function(){
+  var blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});var a=document.createElement('a');
+  var nm=(S.property.name||'property').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase()||'property';
+  a.href=URL.createObjectURL(blob);a.download='dampness-'+nm+'-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);toast('Backup downloaded');
+});
+$('#importFile').addEventListener('change',function(e){
+  var file=e.target.files[0];if(!file)return;var rd=new FileReader();
+  rd.onload=function(){try{var o=JSON.parse(rd.result);if(!o||o.v!==1||!Array.isArray(o.findings))throw 0;S=Object.assign(blank(),o);save();applySettings();renderAll();go('report');toast('Backup restored');}catch(err){toast('That file is not a valid backup.');}e.target.value='';};
+  rd.readAsText(file);
+});
+$('#resetBtn').addEventListener('click',function(e){
+  var b=e.currentTarget;
+  if(b.dataset.confirm){var keep=S.settings;S=blank();S.settings=keep;save();renderAll();toast('All data cleared');delete b.dataset.confirm;b.textContent='Clear all data';}
+  else{b.dataset.confirm='1';b.textContent='Tap again to clear everything';setTimeout(function(){delete b.dataset.confirm;b.textContent='Clear all data';},3500);}
+});
+
+/* ---------- Guide ---------- */
+function renderGuide(){
+  $('#stepsList').innerHTML=Object.keys(STEPS).map(function(k){return '<li>'+stepHtml(k)+'</li>';}).join('');
+  $('#srcList').innerHTML=Object.keys(SRC).map(function(k){var s=SRC[k];return '<li id="src-'+k+'"><span class="key">'+srcShort(k)+'</span><b>'+esc(s.n)+'</b> ('+esc(s.d)+')'+(s.u?'<br><a href="'+s.u+'" target="_blank" rel="noopener">'+esc(s.u)+'</a>':'')+'</li>';}).join('');
+}
+document.addEventListener('click',function(e){
+  var a=e.target.closest('a[data-src]');if(!a)return;e.preventDefault();e.stopPropagation();
+  go('guide');var el=document.getElementById('src-'+a.dataset.src);if(el){setTimeout(function(){el.scrollIntoView({block:'center'});el.style.background='var(--cyan-soft)';setTimeout(function(){el.style.background='';},1800);},30);}
+},true);
+
+/* ---------- Init ---------- */
+renderGuide();
+function renderAll(){renderProperty();renderSweep();renderChecks();renderReadings();renderReadingsCalc();if(curId&&findById(curId))renderEditor();else showList();if(curTab==='report')renderReport();}
+if(!S.property.date){S.property.date=new Date().toISOString().slice(0,10);}
+if(!Array.isArray(S.property.exposure))S.property.exposure=[];
+applySettings();renderAll();go('start');
+})();
+</script>
+</body>
+</html>
